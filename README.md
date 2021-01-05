@@ -1,5 +1,5 @@
 # javascript-challenge
-=======
+
 Level 1: Automatic Table and Date Search
 
 use the index.html file provided.
