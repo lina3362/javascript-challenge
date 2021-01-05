@@ -2,54 +2,55 @@
 var tableData = data;
 console.log(tableData);
 
-// Get a reference to the table body
+// define references to the table body
 var tbody = d3.select("tbody");
 
-// UFO Sighting values for each column
-tableData.forEach(function(ufoSighting) {
-    console.log(ufoSighting);
-    // Append one table row `tr` for each UFO Sighting object
-    var row = tbody.append("tr");
+// fill in table data 
+tableData.forEach(row => {
+    tbody.append("tr");
 
-    // Use `Object.entries` to console.log each UFO Sighting value
-    Object.entries(ufoSighting).forEach(function([key, value]) {
-      console.log(key, value);
-      // Append a cell to the row for each value
-      var cell = row.append("td");
-      cell.text(value);
-    });
-  });
+    for (key in row){
+        var cell = tbody.append("td");
+        cell.text(row[key]);
+    }
+});
 
-
-// Select the button
-var button = d3.select("#filter-btn");
-button.on("click", function() {
+// define references to the filter button and select the button
+var filter_button = d3.select("#filter-btn");
+filter_button.on("click", function() {
 
     tbody.html("");
 
-    // Select the input date get the raw HTML nodes
     var inputElement = d3.select("#datetime");
-    // Get the value property of the input date, state, shape
+    var inputCity = d3.select("#city");
+    var inputState = d3.select("#state");
+    var inputCountry = d3.select("#country");
+    var inputShape = d3.select("#shape");
     var inputValue = inputElement.property("value");
-    // console.log input value
+    var inputCityValue = inputCity.property("value").toLowerCase();
+    var inputStateValue = inputState.property("value").toLowerCase();
+    var inputCountryValue = inputCountry.property("value").toLowerCase();
+    var inputShapeValue = inputShape.property("value").toLowerCase();
     console.log(inputValue);
-    // Filter Data with datetime equal to input value
-    var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
-    // console.log filter values
-    console.log(filteredData);
 
+    //Filter data with datetime
+    var filteredData = tableData.filter(sighting => sighting.datetime === inputValue ||
+                                                    sighting.city === inputCityValue ||
+                                                    sighting.state === inputStateValue ||
+                                                    sighting.country === inputCountryValue ||
+                                                    sighting.shape === inputShapeValue);
+    console.log(filteredData);
 
     filteredData.forEach(function(selections) {
 
-    console.log(selections);
-    // Append one table row `tr` for each UFO Sighting object
-    var row = tbody.append("tr");
-    // Use `Object.entries` to console.log each UFO Sighting value
-    Object.entries(selections).forEach(function([key, value]) {
-        console.log(key, value);
-        // Append a cell to the row for each value
-        var cell = row.append("td");
-        cell.text(value);
+        console.log(selections);
+        var row = tbody.append("tr");
+        Object.entries(selections).forEach(function([key, value]) {
+            console.log(key, value);
+            var cell = row.append("td");
+            cell.text(value);
+        });
     });
+
 });
-});
+
