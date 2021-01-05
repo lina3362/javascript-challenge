@@ -3,14 +3,14 @@ var tableData = data;
 console.log(tableData);
 
 // define references to the table body
-var $tbody = d3.select("tbody");
+var tbody = d3.select("tbody");
 
 // fill in table data 
 tableData.forEach(row => {
-    $tbody.append("tr");
+    tbody.append("tr");
 
     for (key in row){
-        var cell = $tbody.append("td");
+        var cell = tbody.append("td");
         cell.text(row[key]);
     }
 });
@@ -19,22 +19,25 @@ tableData.forEach(row => {
 var filter_button = d3.select("#filter-btn");
 filter_button.on("click", function() {
 
-    $tbody.html("");
+    tbody.html("");
 
     var inputElement = d3.select("#datetime");
-    var inputValue = inputElement.property("value").trim();
+    var inputValue = inputElement.property("value");
     console.log(inputValue);
 
     //Filter data with datetime
-    var filteredData = tableData.filter(tableData => tableData.datetime === inputValue);
+    var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
     console.log(filteredData);
 
-})
+    filteredData.forEach(function(selections) {
 
+        console.log(selections);
+        var row = tbody.append("tr");
+        Object.entries(selections).forEach(function([key, value]) {
+            console.log(key, value);
+            var cell = row.append("td");
+            cell.text(value);
+        });
+    });
 
-
-var reset_button = d3.select("#reset-btn");
-
-var inputCity = d3.select("#city");
-var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
-
+});
